@@ -1,5 +1,3 @@
-// --- KONFIGURACJA SUPABASE ---
-// Podmień poniższe wartości na swoje dane z panelu Supabase (Project Settings -> API)
 const SUPABASE_URL = "https://mmburkniqjtdpchyotnb.supabase.co/rest/v1/"; 
 const SUPABASE_KEY = "sb_publishable_XdQqpRqF-bCwI7wfSqdmvg_vAuu34Bq";
 

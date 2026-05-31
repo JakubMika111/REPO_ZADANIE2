@@ -1,4 +1,4 @@
-const SUPABASE_URL = "https://mmburkniqjtdpchyotnb.supabase.co/rest/v1/"; 
+const SUPABASE_URL = "https://mmburkniqjtdpchyotnb.supabase.co/rest/v1/article"; 
 const SUPABASE_KEY = "sb_publishable_XdQqpRqF-bCwI7wfSqdmvg_vAuu34Bq";
 
 // Pobranie elementów z drzewa DOM

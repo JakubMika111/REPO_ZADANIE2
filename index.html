@@ -1,32 +1,63 @@
 <!DOCTYPE html>
 <html lang="pl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/src/style.css">
-    <title>projektJM</title>
-  </head>
-  <body class="p-10 font-sans">
-    <h1 class="text-2xl font-bold text-primary">Kalkulator Urodzin</h1>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
 
-    <form id="birthdayForm" class="mt-8 space-y-4">
-      <div>
-        <label class="block mb-2">Wybierz datę urodzenia:</label>
-        <input type="date" id="birthDate" required class="border p-2 rounded shadow-sm">
-      </div>
-      
-      <button type="submit" class="bg-blue-300 p-4 rounded-lg hover:bg-blue-400 transition-colors">
-        Wyślij
-      </button>
-    </form>
-
-    <dialog id="resultDialog" class="bg-gray-200 p-10 rounded-lg shadow-2xl relative border-none">
-      <button id="closeDialog" class="absolute top-2 right-4 text-2xl font-bold hover:text-gray-600">×</button>
-      
-      <div id="dialogContent" class="text-red-600 text-lg font-medium leading-relaxed">
+    <header class="bg-white shadow-sm mb-8 py-6">
+        <div class="max-w-3xl mx-auto px-4">
+            <h1 class="text-3xl font-bold text-gray-900">Blog</h1>
         </div>
-    </dialog>
+    </header>
 
-    <script type="module" src="/src/main.js"></script>
-  </body>
+    <main class="max-w-3xl mx-auto px-4">
+        
+        <section class="mb-12">
+            <h2 class="text-xl font-semibold mb-4 text-gray-700">Artykuły</h2>
+            <div id="articles-container" class="space-y-6">
+                <p class="text-gray-500 italic">Ładowanie artykułów...</p>
+            </div>
+        </section>
+
+        <hr class="border-gray-200 my-8">
+
+        <section class="bg-white p-6 rounded-lg shadow-sm mb-12">
+            <h2 class="text-xl font-semibold mb-4 text-gray-800">Dodaj nowy artykuł</h2>
+            
+            <form id="article-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Tytuł</label>
+                    <input type="text" id="title" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Podtytuł</label>
+                    <input type="text" id="subtitle" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Autor</label>
+                    <input type="text" id="author" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Treść</label>
+                    <textarea id="content" rows="4" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                </div>
+                
+                <button type="submit" class="w-full bg-blue-600 text-white font-medium py-2 px-4 rounded hover:bg-blue-700 transition">
+                    Opublikuj artykuł
+                </button>
+            </form>
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
 </html>

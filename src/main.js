@@ -1,47 +1,80 @@
-import dayjs from 'dayjs';
+const SUPABASE_URL = "https://mmburkniqjtdpchyotnb.supabase.co";
+const SUPABASE_KEY = "sb_publishable_XdQqpRqF-bCwI7wfSqdmvg_vAuu34Bq";
 
-const form = document.querySelector('#birthdayForm');
-const dialog = document.querySelector('#resultDialog');
-const content = document.querySelector('#dialogContent');
-const closeBtn = document.querySelector('#closeDialog');
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    
-    const inputDate = document.querySelector('#birthDate').value;
-    const birthDate = dayjs(inputDate).startOf('day');
-    const today = dayjs().startOf('day');
+const articlesContainer = document.getElementById('articles-container');
+const articleForm = document.getElementById('article-form');
 
-// 1. Obliczanie dni
-    const daysSinceBirth = today.diff(birthDate, 'days');
+// 2. FUNKCJA POBIERAJĄCA ARTYKUŁY Z BAZY
+async function fetchArticles() {
+    const { data, error } = await supabase
+        .from('articles')
+        .select('*')
+        .order('created_at', { ascending: false });
 
-// 2. Sprawdzenie urodzin
-    if (today.format('MM-DD') === birthDate.format('MM-DD')) {
-        alert("Wszystkiego najlepszego!");
+    if (error) {
+        console.error("Błąd pobierania danych:", error);
+        articlesContainer.innerHTML = '<p class="text-red-500">Nie udało się załadować artykułów.</p>';
+        return;
     }
 
-// 3.Ile tygodni do urodizn
-    let nextBirthday = birthDate.year(today.year());
-    
-    if (nextBirthday.isBefore(today, 'day')) {
-        nextBirthday = nextBirthday.add(1, 'year');
+    // Sprawdzenie, czy baza nie jest pusta
+    if (data.length === 0) {
+        articlesContainer.innerHTML = '<p class="text-gray-500 italic">Brak artykułów do wyświetlenia.</p>';
+        return;
     }
 
-    const weeksRemaining = nextBirthday.diff(today, 'weeks');
-    let message = `Dni od Twoich narodzin: ${daysSinceBirth}`;
+    // Czyszczenie napisu "Ładowanie..." przed wstawieniem artykułów
+    articlesContainer.innerHTML = '';
 
-    if (today.format('MM-DD') !== birthDate.format('MM-DD')) {
-        if (weeksRemaining === 0) {
-            message += `<br>Masz urodziny w tym tygodniu!`;
-        } else {
-            message += `<br>Pozostało tygodni do urodzin: ${weeksRemaining}`;
-        }
+    // Renderowanie każdego artykułu z osobna
+    data.forEach(article => {
+        // Formatowanie daty na czytelny dla nas format (DD.MM.YYYY)
+        const date = new Date(article.created_at).toLocaleDateString('pl-PL');
+
+        // Konstruowanie wyglądu pojedynczego artykułu
+        const articleHTML = `
+            <article class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                <h3 class="text-2xl font-bold text-gray-900 mb-1">${article.title}</h3>
+                <h4 class="text-lg text-gray-600 mb-3">${article.subtitle}</h4>
+                <div class="text-xs text-gray-400 mb-4">
+                    Autor: <span class="font-medium text-gray-600">${article.author}</span> | Data: ${date}
+                </div>
+                <p class="text-gray-700 leading-relaxed whitespace-pre-line">${article.content}</p>
+            </article>
+        `;
+        
+        articlesContainer.innerHTML += articleHTML;
+    });
+}
+
+// 3. OBSŁUGA WYSYŁANIA FORMULARZA (DODAWANIE NOWEGO ARTYKUŁU)
+articleForm.addEventListener('submit', async (e) => {
+    e.preventDefault(); // Blokujemy domyślne przeładowanie strony po kliknięciu przycisku
+
+    // Pobranie wartości wpisanych przez użytkownika w formularzu
+    const title = document.getElementById('title').value;
+    const subtitle = document.getElementById('subtitle').value;
+    const author = document.getElementById('author').value;
+    const content = document.getElementById('content').value;
+
+    // Wysłanie paczki danych do tabeli w Supabase
+    const { error } = await supabase
+        .from('articles')
+        .insert([
+            { title: title, subtitle: subtitle, author: author, content: content }
+        ]);
+
+    if (error) {
+        console.error("Błąd podczas dodawania wpisu:", error);
+        alert("Wystąpił błąd podczas dodawania artykułu.");
+    } else {
+        // Jeśli wszystko się udało: czyścimy formularz i odświeżamy listę, by zobaczyć nowy wpis
+        articleForm.reset();
+        fetchArticles();
     }
-
-    content.innerHTML = message;
-    dialog.showModal();
 });
 
-closeBtn.addEventListener('click', () => {
-    dialog.close();
-});
+// Uruchomienie pobierania danych zaraz po wejściu na stronę
+fetchArticles();

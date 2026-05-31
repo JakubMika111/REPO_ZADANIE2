@@ -1,4 +1,4 @@
-const SUPABASE_URL = "https://mmburkniqjtdpchyotnb.supabase.co";
+const SUPABASE_URL = "https://mmburkniqjtdpchyotnb.supabase.co/rest/v1/";
 const SUPABASE_KEY = "sb_publishable_XdQqpRqF-bCwI7wfSqdmvg_vAuu34Bq";
 
 const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -9,7 +9,7 @@ const articleForm = document.getElementById('article-form');
 // 2. FUNKCJA POBIERAJĄCA ARTYKUŁY Z BAZY
 async function fetchArticles() {
     const { data, error } = await supabase
-        .from('articles')
+        .from('KOLUMNA1')
         .select('*')
         .order('created_at', { ascending: false });
 
@@ -61,7 +61,7 @@ articleForm.addEventListener('submit', async (e) => {
 
     // Wysłanie paczki danych do tabeli w Supabase
     const { error } = await supabase
-        .from('articles')
+        .from('KOLUMNA1')
         .insert([
             { title: title, subtitle: subtitle, author: author, content: content }
         ]);

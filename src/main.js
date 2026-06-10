@@ -1,4 +1,4 @@
-const SUPABASE_URL = "https://mmburkniqjtdpchyotnb.supabase.co/rest/v1/KOLUMNA1"; 
+const SUPABASE_URL = "https://mmburkniqjtdpchyotnb.supabase.co/rest/v1/article"; 
 const SUPABASE_KEY = "sb_publishable_XdQqpRqF-bCwI7wfSqdmvg_vAuu34Bq";
 
 const articlesContainer = document.getElementById('articles-container');
@@ -41,8 +41,8 @@ const displayArticles = (articles) => {
             <h3 class="text-2xl font-bold text-gray-900 mb-1">${article.title}</h3>
             <h4 class="text-lg font-medium text-indigo-500 mb-3">${article.subtitle}</h4>
             <div class="flex flex-wrap justify-between text-sm text-gray-500 mb-4 bg-gray-50 p-2 rounded">
-                <span><strong>Autor:</strong> ${article.author}</span>
-                <span><strong>Data utworzenia:</strong> ${new Date(article.created_at).toLocaleString('pl-PL')}</span>
+                <address class="not-italic"><strong>Autor:</strong> ${article.author}</address>
+                <time datetime="${article.created_at}"><strong>Data utworzenia:</strong> ${new Date(article.created_at).toLocaleString('pl-PL')}</time>
             </div>
             <p class="text-gray-700 whitespace-pre-line leading-relaxed">${article.content}</p>
         </article>
